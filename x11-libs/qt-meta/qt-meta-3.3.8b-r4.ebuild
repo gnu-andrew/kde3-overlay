@@ -106,36 +106,6 @@ src_prepare() {
 	find "${S}"/mkspecs -name qmake.conf | xargs \
 		sed -i -e 's:QMAKE_RPATH.*:QMAKE_RPATH =:'
 
-	# Patch for uic includehint errors (aseigo patch)
-	epatch "${FILESDIR}"/qt-3.3.8-uic-fix.patch
-
-	# KDE related patches
-	epatch "${FILESDIR}"/0001-dnd_optimization.patch
-	epatch "${FILESDIR}"/0002-dnd_active_window_fix.patch
-	epatch "${FILESDIR}"/0038-dragobject-dont-prefer-unknown.patch
-	epatch "${FILESDIR}"/0044-qscrollview-windowactivate-fix.diff
-	epatch "${FILESDIR}"/0047-fix-kmenu-widget.diff
-	epatch "${FILESDIR}"/0048-qclipboard_hack_80072.patch
-
-	# ulibc patch (bug #100246)
-	epatch "${FILESDIR}"/qt-ulibc.patch
-
-	# xinerama patch: http://ktown.kde.org/~seli/xinerama/
-	epatch "${FILESDIR}"/qt-3.3.8-seli-xinerama.patch
-
-	# Visibility patch, apply only on GCC 4.1 and later for safety
-	# [[ $(gcc-major-version)$(gcc-minor-version) -ge 41 ]] && \
-		epatch "${FILESDIR}"/qt-3.3.8-visibility.patch
-
-	# Fix configure to correctly pick up gcc version, bug 244732
-	epatch "${FILESDIR}"/qt-3.3.8-fix-compiler-detection.patch
-
-	# Fix CJK script rendering, bug 229567
-	epatch "${FILESDIR}"/qt-3.3.8b-cjk-fix.patch
-
-	# Fix libpng-1.4 issues
-	epatch "${FILESDIR}"/qt-3.3.8-libpng14.patch
-
 	# Fix gcc 4.6.0 build issues to ptrdiff_t
 	epatch "${FILESDIR}"/qt-3.3.8-cstddef.patch
 
