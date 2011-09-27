@@ -106,9 +106,6 @@ src_prepare() {
 	find "${S}"/mkspecs -name qmake.conf | xargs \
 		sed -i -e 's:QMAKE_RPATH.*:QMAKE_RPATH =:'
 
-	# Fix gcc 4.6.0 build issues to ptrdiff_t
-	epatch "${FILESDIR}"/qt-3.3.8-cstddef.patch
-
 	if use immqt || use immqt-bc ; then
 		epatch ../${IMMQT_P}.diff
 		sh make-symlinks.sh || die "make symlinks failed"
