@@ -3,6 +3,7 @@
 # $Header: /var/cvsroot/gentoo-x86/app-office/koffice-libs/koffice-libs-1.6.3_p20090204.ebuild,v 1.8 2009/09/27 12:33:06 ranger Exp $
 
 ARTS_REQUIRED="never"
+EAPI="4"
 
 KMNAME=koffice
 KMMODULE=lib
@@ -13,13 +14,14 @@ HOMEPAGE="http://www.koffice.org/"
 LICENSE="GPL-2 LGPL-2"
 ESVN_REPO_URI="svn://anonsvn.kde.org/home/kde/branches/koffice/1.6/koffice"
 ESVN_PROJECT="koffice"
+SRC_URI=""
 
 SLOT="3.5"
 KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"
 IUSE="doc"
 
 RDEPEND="~app-office/koffice-data-1.6.9999
-	virtual/python
+	dev-lang/python:2.7
 	dev-lang/ruby"
 
 DEPEND="${RDEPEND}
