@@ -1,0 +1,10 @@
+--- kexi-1.6.3.old/kexi/kexidb/drivers/pqxx/pqxxcursor.cpp	2007-05-30 22:35:49.000000000 +0100
++++ kexi-1.6.3/kexi/kexidb/drivers/pqxx/pqxxcursor.cpp	2008-11-30 00:10:38.000000000 +0000
+@@ -21,6 +21,7 @@
+ #include "pqxxconnection.h"
+ #include "pqxxconnection_p.h"
+ 
++#include <cstdlib>
+ #include <kexidb/error.h>
+ #include <kexidb/global.h>
+ 
