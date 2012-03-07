@@ -34,7 +34,6 @@ KMEXTRA="interfaces/
 	filters/xsltfilter/
 	filters/generic_wrapper/
 	kounavail/
-	doc/api/
 	doc/koffice/
 	doc/thesaurus/"
 
@@ -47,8 +46,9 @@ PATCHES=( "${FILESDIR}/const_char.patch" )
 
 src_unpack() {
 	subversion_src_unpack
-	kde-meta_src_unpack unpack
+}
 
+src_prepare() {
 	# work with new wv2 API: http://wvware.svn.sourceforge.net/viewvc/wvware?view=rev&revision=33
 	if has_version ">=app-text/wv2-0.4.2"; then
 		epatch "${FILESDIR}/wv2.patch"
@@ -72,8 +72,12 @@ src_unpack() {
 	kde-meta_src_unpack makefiles
 }
 
-src_compile() {
+src_configure() {
 	local myconf="--enable-scripting --with-pythonfir=/usr/$(get_libdir)/python${PYVER}/site-packages"
+	kde-meta_src_configure
+}
+
+src_compile() {
 	kde-meta_src_compile
 	if use doc; then
 		make apidox || die

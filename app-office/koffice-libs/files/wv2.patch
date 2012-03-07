@@ -1,6 +1,6 @@
-diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' kword-1.6.9999.orig/filters/kword/msword/conversion.cpp kword-1.6.9999/filters/kword/msword/conversion.cpp
---- kword-1.6.9999.orig/filters/kword/msword/conversion.cpp	2010-04-17 13:11:06.346847072 +0100
-+++ kword-1.6.9999/filters/kword/msword/conversion.cpp	2010-04-18 09:35:29.627846060 +0100
+diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/conversion.cpp koffice-libs-1.6.9999/filters/koffice-libs/msword/conversion.cpp
+--- koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/conversion.cpp	2010-04-17 13:11:06.346847072 +0100
++++ koffice-libs-1.6.9999/filters/koffice-libs/msword/conversion.cpp	2010-04-18 09:35:29.627846060 +0100
 @@ -285,9 +285,9 @@
      return value;
  }
@@ -22,9 +22,9 @@ diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' kword-1.6.9999.orig/filters/k
  
      borderElement.setAttribute( prefix.isNull() ? "width" : prefix+"Width",
                                  (double)brc.dptLineWidth / 8.0 );
-diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' kword-1.6.9999.orig/filters/kword/msword/document.cpp kword-1.6.9999/filters/kword/msword/document.cpp
---- kword-1.6.9999.orig/filters/kword/msword/document.cpp	2010-04-17 13:11:06.350847739 +0100
-+++ kword-1.6.9999/filters/kword/msword/document.cpp	2010-04-18 09:27:00.830846140 +0100
+diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/document.cpp koffice-libs-1.6.9999/filters/koffice-libs/msword/document.cpp
+--- koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/document.cpp	2010-04-17 13:11:06.350847739 +0100
++++ koffice-libs-1.6.9999/filters/koffice-libs/msword/document.cpp	2010-04-18 09:27:00.830846140 +0100
 @@ -390,28 +390,28 @@
  {
      // Frame borders
@@ -65,9 +65,9 @@ diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' kword-1.6.9999.orig/filters/k
          if ( grayHack )
          {
              bool ok;
-diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' kword-1.6.9999.orig/filters/kword/msword/tablehandler.cpp kword-1.6.9999/filters/kword/msword/tablehandler.cpp
---- kword-1.6.9999.orig/filters/kword/msword/tablehandler.cpp	2010-04-17 13:11:06.358848565 +0100
-+++ kword-1.6.9999/filters/kword/msword/tablehandler.cpp	2010-04-18 09:15:06.756346113 +0100
+diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/tablehandler.cpp koffice-libs-1.6.9999/filters/koffice-libs/msword/tablehandler.cpp
+--- koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/tablehandler.cpp	2010-04-17 13:11:06.358848565 +0100
++++ koffice-libs-1.6.9999/filters/koffice-libs/msword/tablehandler.cpp	2010-04-18 09:15:06.756346113 +0100
 @@ -169,11 +169,11 @@
      const wvWare::Word97::BRC& brcTop = tc.brcTop;
      const wvWare::Word97::BRC& brcBottom = tc.brcBottom;
@@ -82,9 +82,9 @@ diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' kword-1.6.9999.orig/filters/k
          m_tap->rgtc[ m_column + 1 ].brcLeft
          : tc.brcRight;
  
-diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' kword-1.6.9999.orig/filters/kword/msword/texthandler.cpp kword-1.6.9999/filters/kword/msword/texthandler.cpp
---- kword-1.6.9999.orig/filters/kword/msword/texthandler.cpp	2010-04-17 13:11:06.362846533 +0100
-+++ kword-1.6.9999/filters/kword/msword/texthandler.cpp	2010-04-18 08:59:22.322849154 +0100
+diff -Nru -x '*.lo' -x '*.loT' -x '*.o' -x '*.log' koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/texthandler.cpp koffice-libs-1.6.9999/filters/koffice-libs/msword/texthandler.cpp
+--- koffice-libs-1.6.9999.orig/filters/koffice-libs/msword/texthandler.cpp	2010-04-17 13:11:06.362846533 +0100
++++ koffice-libs-1.6.9999/filters/koffice-libs/msword/texthandler.cpp	2010-04-18 08:59:22.322849154 +0100
 @@ -322,9 +322,9 @@
      format.setAttribute( "pos", pos );
      format.setAttribute( "len", len );

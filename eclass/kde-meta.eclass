@@ -410,7 +410,7 @@ kde-meta_src_configure() {
 	# Make sure kde_src_configure is run in EAPI >= 2
 	case ${EAPI:-0} in
 		0|1) ;;
-		*) kde_src_configure ;;
+		*) kde_src_configure all ;;
 	esac
 }
 
@@ -442,6 +442,7 @@ kde-meta_src_install() {
 			make)
 				for dir in $KMMODULE $KMEXTRA $DOCS; do
 					if [[ -d "${S}"/$dir ]]; then
+					        echo "${S}"/$dir
 						cd "${S}"/$dir
 						emake DESTDIR="${D}" destdir="${D}" install || die "emake install failed."
 					fi
