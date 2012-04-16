@@ -1,0 +1,10 @@
+--- kdeprint/cups/cupsdconf2/cups-util.c~	2007-10-08 10:52:10.000000000 +0100
++++ kdeprint/cups/cupsdconf2/cups-util.c	2012-04-16 15:21:33.998278031 +0100
+@@ -5,6 +5,7 @@
+ #include <fcntl.h>
+ #include <sys/stat.h>
+ #include <unistd.h>
++#include <stdio.h>
+ 
+ #define CUPS_SERVERROOT	"/etc/cups"
+ static http_t		*cups_server;
