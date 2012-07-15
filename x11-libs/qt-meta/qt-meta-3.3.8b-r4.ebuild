@@ -6,7 +6,7 @@
 
 EAPI="4"
 
-inherit eutils flag-o-matic git-2 toolchain-funcs
+inherit eutils flag-o-matic git-2 multilib toolchain-funcs
 
 SRCTYPE="free"
 DESCRIPTION="The Qt toolkit is a comprehensive C++ application development framework."

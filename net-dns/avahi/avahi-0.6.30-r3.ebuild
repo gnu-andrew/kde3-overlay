@@ -8,7 +8,7 @@ PYTHON_DEPEND="python? 2"
 PYTHON_USE_WITH="gdbm"
 PYTHON_USE_WITH_OPT="python"
 
-inherit autotools eutils mono python multilib flag-o-matic
+inherit autotools eutils mono python multilib flag-o-matic user
 
 DESCRIPTION="System which facilitates service discovery on a local network"
 HOMEPAGE="http://avahi.org/"
@@ -189,7 +189,6 @@ src_install() {
 		insinto /usr/share/devhelp/books/avahi
 		doins avahi.devhelp || die
 	fi
-
 
 	use python && python_convert_shebangs -r 2 "${ED}"/usr/bin #396339
 

@@ -2,6 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-office/kexi/kexi-1.6.3_p20090204.ebuild,v 1.8 2009/09/27 12:30:31 ranger Exp $
 
+EAPI=0
 ARTS_REQUIRED="never"
 
 KMNAME=koffice
@@ -12,6 +13,7 @@ HOMEPAGE="http://www.koffice.org/"
 LICENSE="GPL-2 LGPL-2"
 ESVN_REPO_URI="svn://anonsvn.kde.org/home/kde/branches/koffice/1.6/koffice"
 ESVN_PROJECT="koffice"
+SRC_URI=""
 
 SLOT="3.5"
 KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"

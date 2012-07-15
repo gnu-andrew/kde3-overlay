@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-office/koffice-libs/koffice-libs-1.6.3_p20090204.ebuild,v 1.8 2009/09/27 12:33:06 ranger Exp $
 
-ARTS_REQUIRED="never"
 EAPI="4"
+ARTS_REQUIRED="never"
 
 KMNAME=koffice
 KMMODULE=lib
