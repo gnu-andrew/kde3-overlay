@@ -12,6 +12,7 @@ HOMEPAGE="http://www.koffice.org/"
 LICENSE="GPL-2 LGPL-2"
 ESVN_REPO_URI="svn://anonsvn.kde.org/home/kde/branches/koffice/1.6/koffice"
 ESVN_PROJECT="koffice"
+SRC_URI=""
 
 SLOT="3.5"
 KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"
