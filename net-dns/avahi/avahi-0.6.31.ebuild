@@ -1,6 +1,6 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/avahi-0.6.30-r1.ebuild,v 1.1 2011/08/14 12:52:06 nirbheek Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/avahi-0.6.31.ebuild,v 1.3 2013/03/03 02:03:20 pesa Exp $
 
 EAPI="3"
 
@@ -8,7 +8,9 @@ PYTHON_DEPEND="python? 2"
 PYTHON_USE_WITH="gdbm"
 PYTHON_USE_WITH_OPT="python"
 
-inherit autotools eutils mono python multilib flag-o-matic user
+WANT_AUTOMAKE=1.11
+
+inherit autotools eutils mono python multilib flag-o-matic user systemd
 
 DESCRIPTION="System which facilitates service discovery on a local network"
 HOMEPAGE="http://avahi.org/"
@@ -16,8 +18,7 @@ SRC_URI="http://avahi.org/download/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86
-~x86-fbsd ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~x86-linux"
 IUSE="autoipd bookmarks dbus doc gdbm gtk gtk3 howl-compat +introspection ipv6
 kernel_linux mdnsresponder-compat mono python qt3 qt4 test utils"
 
@@ -27,7 +28,7 @@ COMMON_DEPEND=">=dev-libs/libdaemon-0.14
 	dev-libs/glib:2
 	gdbm? ( sys-libs/gdbm )
 	qt3? ( dev-qt/qt-meta:3 )
-	qt4? ( dev-qt/qt-core:4 )
+	qt4? ( dev-qt/qtcore:4 )
 	gtk? ( >=x11-libs/gtk+-2.14.0:2 )
 	gtk3? ( x11-libs/gtk+:3 )
 	dbus? (
@@ -51,7 +52,7 @@ COMMON_DEPEND=">=dev-libs/libdaemon-0.14
 	kernel_linux? ( sys-libs/libcap )"
 DEPEND="${COMMON_DEPEND}
 	>=dev-util/intltool-0.40.5
-	>=dev-util/pkgconfig-0.9.0
+	virtual/pkgconfig
 	doc? (
 		app-doc/doxygen
 		mono? ( >=virtual/monodoc-1.1.8 )
@@ -99,12 +100,19 @@ src_prepare() {
 		doxygen_to_devhelp.xsl || die
 
 	# Make gtk utils optional
-	epatch "${FILESDIR}/${PN}-0.6.30-optional-gtk-utils.patch"
+	epatch "${FILESDIR}"/${PN}-0.6.30-optional-gtk-utils.patch
+
+	# Fix init scripts for >=openrc-0.9.0 (bug #383641)
+	epatch "${FILESDIR}"/${PN}-0.6.x-openrc-0.9.x-init-scripts-fixes.patch
+
+	# install-exec-local -> install-exec-hook
+	epatch "${FILESDIR}"/${P}-install-exec-hook.patch
+
+	# Drop DEPRECATED flags, bug #384743
+	sed -i -e 's:-D[A-Z_]*DISABLE_DEPRECATED=1::g' avahi-ui/Makefile.am || die
 
 	# Prevent .pyc files in DESTDIR
 	>py-compile
-
-	epatch "${FILESDIR}"/${P}-automake-1.11.2.patch #397477
 
 	eautoreconf
 }
@@ -157,6 +165,7 @@ src_configure() {
 		$(use_enable qt3) \
 		$(use_enable qt4) \
 		$(use_enable gdbm) \
+		$(systemd_with_unitdir) \
 		${myconf}
 }
 
@@ -190,10 +199,11 @@ src_install() {
 		doins avahi.devhelp || die
 	fi
 
-	use python && python_convert_shebangs -r 2 "${ED}"/usr/bin #396339
+	# /usr/bin/avahi-bookmarks is installed only with USE="bookmarks dbus gtk python".
+	# /usr/bin/avahi-discover is installed only with USE="dbus gtk python".
+	use dbus && use gtk && use python && python_convert_shebangs -r 2 "${ED}usr/bin"
 
-	# Remove .la files
-	find "${ED}" -name '*.la' -exec rm -f {} + || die
+	find "${ED}" -name '*.la' -exec rm -f {} +
 }
 
 pkg_postrm() {
