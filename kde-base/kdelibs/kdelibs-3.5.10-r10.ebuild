@@ -1,4 +1,4 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/kde-base/kdelibs/kdelibs-3.5.10-r6.ebuild,v 1.8 2009/08/01 07:12:04 ssuominen Exp $
 
@@ -161,6 +161,10 @@ src_unpack() {
 
 	# bug 267018
 	sed -i '/^SUBDIRS/s/ hicolor / /' pics/Makefile.{am,in}
+
+	if has_version ">=net-print/cups-1.6" ; then
+		epatch "${FILESDIR}/${P}-cups-1.6.patch";
+	fi
 }
 
 src_compile() {
