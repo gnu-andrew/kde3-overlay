@@ -1,15 +1,15 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/avahi-0.6.31-r2.ebuild,v 1.12 2013/08/06 13:07:54 ago Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/avahi-0.6.31-r4.ebuild,v 1.1 2014/02/09 00:48:03 vapier Exp $
 
 EAPI="5"
 
-PYTHON_COMPAT=( python{2_5,2_6,2_7} )
+PYTHON_COMPAT=( python{2_6,2_7} )
 PYTHON_REQ_USE="gdbm"
 
 WANT_AUTOMAKE=1.11
 
-inherit autotools eutils mono python-r1 multilib flag-o-matic user systemd
+inherit autotools eutils flag-o-matic multilib mono-env python-r1 systemd user
 
 DESCRIPTION="System which facilitates service discovery on a local network"
 HOMEPAGE="http://avahi.org/"
@@ -17,8 +17,8 @@ SRC_URI="http://avahi.org/download/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc"
-IUSE="autoipd bookmarks dbus doc gdbm gtk gtk3 howl-compat +introspection ipv6 kernel_linux mdnsresponder-compat mono python qt3 qt4 test utils"
+KEYWORDS="~amd64"
+IUSE="autoipd bookmarks dbus doc gdbm gtk gtk3 howl-compat +introspection ipv6 kernel_linux mdnsresponder-compat mono nls python qt3 qt4 test utils"
 
 REQUIRED_USE="
 	utils? ( || ( gtk gtk3 ) )
@@ -45,6 +45,7 @@ COMMON_DEPEND="
 		gtk? ( dev-dotnet/gtk-sharp )
 	)
 	python? (
+		${PYTHON_DEPS}
 		gtk? ( dev-python/pygtk )
 		dbus? ( dev-python/dbus-python )
 	)
@@ -60,7 +61,6 @@ DEPEND="
 	virtual/pkgconfig
 	doc? (
 		app-doc/doxygen
-		mono? ( virtual/monodoc )
 	)
 "
 
@@ -79,6 +79,10 @@ pkg_preinst() {
 		enewgroup avahi-autoipd
 		enewuser avahi-autoipd -1 -1 -1 avahi-autoipd
 	fi
+}
+
+pkg_setup() {
+	use mono && mono-env_pkg_setup
 }
 
 src_prepare() {
@@ -106,6 +110,8 @@ src_prepare() {
 
 	# Don't install avahi-discover unless ENABLE_GTK_UTILS, bug #359575
 	epatch "${FILESDIR}"/${P}-fix-install-avahi-discover.patch
+
+	epatch "${FILESDIR}"/${P}-so_reuseport-may-not-exist-in-running-kernel.patch
 
 	# Drop DEPRECATED flags, bug #384743
 	sed -i -e 's:-D[A-Z_]*DISABLE_DEPRECATED=1::g' avahi-ui/Makefile.am || die
@@ -158,6 +164,7 @@ src_configure() {
 		$(use_enable python) \
 		$(use_enable gtk) \
 		$(use_enable gtk3) \
+		$(use_enable nls) \
 		$(use_enable introspection) \
 		$(use_enable utils gtk-utils) \
 		$(use_enable qt3) \
