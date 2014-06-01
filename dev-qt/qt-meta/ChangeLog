@@ -1,6 +1,10 @@
-# ChangeLog for x11-libs/qt
-# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# ChangeLog for dev-qt/qt-meta
+# Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
 # $Header: /var/cvsroot/gentoo-x86/x11-libs/qt/ChangeLog,v 1.586 2009/08/02 21:54:28 tommy Exp $
+
+  01 Jun 2014; Andrew John Hughes <gnu_andrew@member.fsf.org>
+  +files/qt-3.3.8-freetype.patch, qt-meta-3.3.8b-r4.ebuild:
+  Support latest Freetype. Drop ODBC support as qt-unixODBC is not present.
 
   28 Feb 2011; Hanno Boeck <hanno@gentoo.org> qt-3.3.8b-r1.ebuild,
   qt-3.3.8b-r2.ebuild:
@@ -1373,4 +1377,3 @@
   02 Sep 2005; <gongloo@gentoo.org> files/qt-3.3.4-macos.patch:
   Fix for Mac OS X library install names. Libraries now reference each other
   in /usr/qt/3/lib. Thanks j4rg0n for catching where the error was.
-

@@ -1,4 +1,4 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/x11-libs/qt/qt-3.3.8b-r2.ebuild,v 1.7 2009/12/03 18:25:47 yngwin Exp $
 
@@ -20,8 +20,8 @@ SRC_URI="immqt? ( mirror://gentoo/${IMMQT_P}.diff.bz2 )
 LICENSE="|| ( QPL-1.0 GPL-2 GPL-3 )"
 
 SLOT="3"
-KEYWORDS="alpha amd64 hppa ia64 ~mips ppc ~ppc64 sparc x86 ~x86-fbsd"
-IUSE="cups debug doc examples firebird ipv6 mysql nas nis odbc opengl postgres sqlite xinerama immqt immqt-bc"
+KEYWORDS="~amd64"
+IUSE="cups debug doc examples firebird ipv6 mysql nas nis opengl postgres sqlite xinerama immqt immqt-bc"
 
 RDEPEND="
 	virtual/jpeg
@@ -47,7 +47,7 @@ DEPEND="${RDEPEND}
 	xinerama? ( x11-proto/xineramaproto )
 	immqt? ( x11-proto/xineramaproto )
 	immqt-bc? ( x11-proto/xineramaproto )"
-PDEPEND="odbc? ( ~dev-db/qt-unixODBC-$PV )"
+#PDEPEND="odbc? ( ~dev-db/qt-unixODBC-$PV )"
 
 S="${WORKDIR}/qt-x11-${SRCTYPE}-${PV}"
 
@@ -115,6 +115,10 @@ src_prepare() {
 
 	if use mips; then
 		epatch "${FILESDIR}"/qt-3.3.8-mips.patch
+	fi
+
+	if has_version ">=media-libs/freetype-2.5" ; then
+		epatch "${FILESDIR}"/qt-3.3.8-freetype.patch
 	fi
 
 	# known working flags wrt #77623
