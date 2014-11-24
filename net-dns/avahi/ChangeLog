@@ -1,6 +1,83 @@
 # ChangeLog for net-dns/avahi
 # Copyright 1999-2014 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/ChangeLog,v 1.221 2012/01/16 16:55:05 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/ChangeLog,v 1.282 2014/11/22 23:32:32 mgorny Exp $
+
+  22 Nov 2014; Michał Górny <mgorny@gentoo.org> +avahi-0.6.31-r7.ebuild:
+  Enable remaining multilib deps (UI libraries), bug #510182.
+
+  02 Nov 2014; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r6.ebuild:
+  Stable for alpha, wrt bug #520338
+
+  02 Nov 2014; Sven Vermeulen <swift@gentoo.org> avahi-0.6.31-r6.ebuild:
+  Remove sec-policy/selinux-* dependency from DEPEND but keep in RDEPEND (bug
+  #527698)
+
+  29 Oct 2014; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r6.ebuild:
+  Stable for sparc, wrt bug #520338
+
+  28 Oct 2014; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r6.ebuild:
+  Stable for ia64, wrt bug #520338
+
+  23 Oct 2014; Pacho Ramos <pacho@gentoo.org> avahi-0.6.31-r6.ebuild:
+  x86 stable, bug #520338
+
+  14 Oct 2014; Pacho Ramos <pacho@gentoo.org> avahi-0.6.31-r6.ebuild:
+  amd64 stable, bug #520338
+
+  09 Oct 2014; Jeroen Roovers <jer@gentoo.org> avahi-0.6.31-r6.ebuild:
+  Stable for HPPA (bug #520338).
+
+  09 Oct 2014; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.31-r6.ebuild:
+  Stable on ppc, ppc64, arm.  Bug #520338.
+
+*avahi-0.6.31-r6 (09 Oct 2014)
+
+  09 Oct 2014; Anthony G. Basile <blueness@gentoo.org> +avahi-0.6.31-r6.ebuild:
+  Fix autoipd module location, bug #524788.  Thanks Dihan Wickremasuriya.
+
+  07 Sep 2014; Anthony G. Basile <blueness@gentoo.org>
+  files/avahi-0.6.31-fix-locale-build.patch:
+  Patch Makefile.am, not Makefile.in, bug #501664
+
+  30 Aug 2014; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.31-r5.ebuild:
+  Stable on arm, bug #520338
+
+  25 Aug 2014; Jeroen Roovers <jer@gentoo.org> avahi-0.6.31-r5.ebuild:
+  Stable for HPPA (bug #520338).
+
+  23 Aug 2014; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.31-r5.ebuild:
+  Stable on ~ppc, ~ppc64.  Bug #520338
+
+  20 Aug 2014; Anthony G. Basile <blueness@gentoo.org> -avahi-0.6.31-r3.ebuild,
+  -avahi-0.6.31-r4.ebuild:
+  Fix bug #501664
+
+  20 Aug 2014; Anthony G. Basile <blueness@gentoo.org>
+  +files/avahi-0.6.31-fix-locale-build.patch, avahi-0.6.31-r5.ebuild:
+  Fix bug #501664
+
+  03 Aug 2014;  <tgall@gentoo.org> avahi-0.6.31-r2.ebuild,
+  avahi-0.6.31-r5.ebuild:
+  arm64, initial support
+
+  24 Jun 2014; Michał Górny <mgorny@gentoo.org> avahi-0.6.31-r5.ebuild:
+  Lower dev-libs/glib dep to first known EAPI=5 version, requested by Funtoo for
+  GNOME 3.6.
+
+  18 Jun 2014; Michał Górny <mgorny@gentoo.org> avahi-0.6.31-r5.ebuild:
+  Update dependencies to require guaranteed EAPI=5 or multilib ebuilds, bug
+  #513718.
+
+  16 May 2014; Sven Vermeulen <swift@gentoo.org> avahi-0.6.30-r3.ebuild,
+  avahi-0.6.31-r2.ebuild, avahi-0.6.31-r3.ebuild, avahi-0.6.31-r4.ebuild,
+  avahi-0.6.31-r5.ebuild:
+  Fix bug #509740 - Add USE=selinux dependency to selinux-avahi
+
+*avahi-0.6.31-r5 (12 May 2014)
+
+  12 May 2014; Michał Górny <mgorny@gentoo.org> +avahi-0.6.31-r5.ebuild,
+  +files/avahi-0.6.31-build-client-without-daemon.patch:
+  Enable multilib support, bug #503160.
 
 *avahi-0.6.31-r4 (08 Apr 2014)
 
@@ -10,6 +87,36 @@
   -avahi-0.6.31-r2.ebuild:
   Support qt3 on latest avahi ebuild.
 
+  09 Feb 2014; Mike Frysinger <vapier@gentoo.org> +avahi-0.6.31-r4.ebuild,
+  +files/avahi-0.6.31-so_reuseport-may-not-exist-in-running-kernel.patch:
+  Add patch from Debian to fix running on older kernels w/newer kernel headers
+  #484212 by Fab.
+
+  27 Jan 2014; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.31-r3.ebuild:
+  Use mono-env.eclass for USE=mono builds
+
+*avahi-0.6.31-r3 (26 Jan 2014)
+
+  26 Jan 2014; Anthony G. Basile <blueness@gentoo.org> +avahi-0.6.31-r3.ebuild:
+  Add USE=nls, bug #491206
+
+  19 Jan 2014; Dion Moult <moult@gentoo.org> avahi-0.6.30-r3.ebuild:
+  Change virtual/monodoc dep to dev-lang/mono as former is treecleaned (bug
+  471180)
+
+  12 Jan 2014; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Fix bug #496240
+
+  12 Jan 2014; Anthony G. Basile <blueness@gentoo.org> -avahi-0.6.30-r1.ebuild,
+  -avahi-0.6.31-r1.ebuild, -avahi-0.6.31.ebuild:
+  Remove older versions
+
+  12 Oct 2013; Pacho Ramos <pacho@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Drop unneeded dep
+
+  05 Sep 2013; Michał Górny <mgorny@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Clean up PYTHON_COMPAT from old implementations.
+
 *avahi-0.6.31-r2 (17 Aug 2013)
 
   17 Aug 2013; Andrew John Hughes <gnu_andrew@member.fsf.org>
@@ -18,11 +125,123 @@
   +files/avahi-0.6.31-fix-install-avahi-discover.patch, -diff:
   Add -r2 ebuild with qt3 changes and remove old versions.
 
+  06 Aug 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for s390, wrt bug #476184
+
+  04 Aug 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for ia64, wrt bug #476184
+
+  03 Aug 2013; Michał Górny <mgorny@gentoo.org> avahi-0.6.30-r1.ebuild,
+  avahi-0.6.30-r3.ebuild, avahi-0.6.31.ebuild, avahi-0.6.31-r1.ebuild,
+  avahi-0.6.31-r2.ebuild:
+  Move dev-python/twisted to dev-python/twisted-core.
+
+  03 Aug 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for sparc, wrt bug #476184
+
+  14 Jul 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for arm, wrt bug #476184
+
+  14 Jul 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for alpha, wrt bug #476184
+
+  13 Jul 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for ppc64, wrt bug #476184
+
+  13 Jul 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for ppc, wrt bug #476184
+
+  13 Jul 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for x86, wrt bug #476184
+
+  12 Jul 2013; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for amd64, wrt bug #476184
+
+  10 Jul 2013; Jeroen Roovers <jer@gentoo.org> avahi-0.6.31-r2.ebuild:
+  Stable for HPPA (bug #476184).
+	
+  28 May 2013; Anthony G. Basile <blueness@gentoo.org> +avahi-0.6.31-r2.ebuild,
+  +files/avahi-0.6.31-fix-install-avahi-discover.patch:
+  Fixes bugs #359575, #399369, #466210  Bug #359575 - only install avahi-
+  discover when gtk is enabled  Bug #399369 - building python bindings do not
+  depend on gtk  Bug #466210 - remove "/home/lennart/tmp/avahi" from man pages
+
+  26 May 2013; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.30-r1.ebuild,
+  avahi-0.6.30-r3.ebuild, avahi-0.6.31-r1.ebuild, avahi-0.6.31.ebuild:
+  Remove unnecessary message about restarting dbus which now uses inotify, bug
+  #440460
+
 *avahi-0.6.31-r1 (24 Apr 2013)
 
   24 Apr 2013; Andrew John Hughes <andrew@gentoo.org> +avahi-0.6.31-r1.ebuild,
   +files/avahi-0.6.31-host-name-from-machine-id.patch, diff:
   Update latest ebuild to support qt3.
+  20 Apr 2013; Anthony G. Basile <blueness@gentoo.org> +avahi-0.6.31-r1.ebuild,
+  +files/avahi-0.6.31-host-name-from-machine-id.patch:
+  Add option host-name-from-machine-id, bug #466134
+
+  03 Mar 2013; Davide Pesavento <pesa@gentoo.org> avahi-0.6.30-r1.ebuild,
+  avahi-0.6.30-r3.ebuild, avahi-0.6.31.ebuild:
+  Move Qt dependencies to the new category. Using --force because of bad
+  dependency on gtk+:3 for s390 profiles.
+
+  02 Feb 2013; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.31.ebuild:
+  Add systemd support, bug #366173
+
+  26 Nov 2012; Anthony G. Basile <blueness@gentoo.org> metadata.xml:
+  Added myself as maintainer
+
+  25 Nov 2012; Sven Wegener <swegener@gentoo.org> metadata.xml:
+  Move to maintainer-needed.
+
+*avahi-0.6.31 (25 Nov 2012)
+
+  25 Nov 2012; Sven Wegener <swegener@gentoo.org> +avahi-0.6.31.ebuild,
+  +files/avahi-0.6.31-install-exec-hook.patch:
+  Version bump, bug #404209.
+
+  07 Oct 2012; Raúl Porcel <armin76@gentoo.org> avahi-0.6.30-r3.ebuild:
+  alpha/ia64/s390/sh/sparc stable wrt #431830
+
+  06 Oct 2012; Anthony G. Basile <blueness@gentoo.org> avahi-0.6.30-r3.ebuild:
+  stable ppc64, bug #431830
+
+  05 Oct 2012; Brent Baude <ranger@gentoo.org> avahi-0.6.30-r3.ebuild:
+  Marking avahi-0.6.30-r3 ppc for bug 431830
+
+  02 Oct 2012; Markus Meier <maekke@gentoo.org> avahi-0.6.30-r3.ebuild:
+  arm stable, bug #431830
+
+  02 Oct 2012; Jeroen Roovers <jer@gentoo.org> avahi-0.6.30-r3.ebuild:
+  Stable for HPPA (bug #431830).
+
+  01 Oct 2012; Agostino Sarubbo <ago@gentoo.org> avahi-0.6.30-r3.ebuild:
+  Stable for amd64, wrt bug #431830
+
+  01 Oct 2012; Pawel Hajdan jr <phajdan.jr@gentoo.org> avahi-0.6.30-r3.ebuild:
+  x86 stable wrt bug #431830
+
+  16 Jun 2012; Diego E. Pettenò <flameeyes@gentoo.org> avahi-0.6.30-r3.ebuild:
+  Use automake 1.11 to avoid build failures.
+
+  14 Jun 2012; Zac Medico <zmedico@gentoo.org> avahi-0.6.30-r1.ebuild,
+  avahi-0.6.30-r3.ebuild:
+  inherit user for enewgroup and enewuser
+
+  13 May 2012; Alexis Ballier <aballier@gentoo.org> avahi-0.6.30-r3.ebuild:
+  keyword ~amd64-fbsd
+
+  03 May 2012; Jeff Horelick <jdhore@gentoo.org> avahi-0.6.30-r1.ebuild,
+  avahi-0.6.30-r3.ebuild:
+  dev-util/pkgconfig -> virtual/pkgconfig
+
+  01 May 2012; Diego E. Pettenò <flameeyes@gentoo.org>
+  +files/avahi-0.6.30-parallel.patch, avahi-0.6.30-r3.ebuild:
+  Fix bug #411351 (broken parallel install with USE=utils).
+
+  12 Feb 2012; Mike Gilbert <floppym@gentoo.org> avahi-0.6.30-r3.ebuild:
+  Call python_convert_shebangs() only in correct combination of USE flags. Patch
+  by Arfrever.
 
   16 Jan 2012; Samuli Suominen <ssuominen@gentoo.org> -avahi-0.6.28-r1.ebuild,
   -files/avahi-0.6.28-CVE-2011-1002.patch, -avahi-0.6.29-r1.ebuild,

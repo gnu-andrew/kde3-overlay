@@ -1,6 +1,6 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/avahi-0.6.31-r4.ebuild,v 1.1 2014/02/09 00:48:03 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-dns/avahi/avahi-0.6.31-r7.ebuild,v 1.1 2014/11/22 23:32:32 mgorny Exp $
 
 EAPI="5"
 
@@ -9,7 +9,8 @@ PYTHON_REQ_USE="gdbm"
 
 WANT_AUTOMAKE=1.11
 
-inherit autotools eutils flag-o-matic multilib mono-env python-r1 systemd user
+inherit autotools eutils flag-o-matic multilib multilib-minimal mono-env \
+	python-r1 systemd user
 
 DESCRIPTION="System which facilitates service discovery on a local network"
 HOMEPAGE="http://avahi.org/"
@@ -18,7 +19,7 @@ SRC_URI="http://avahi.org/download/${P}.tar.gz"
 LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="autoipd bookmarks dbus doc gdbm gtk gtk3 howl-compat +introspection ipv6 kernel_linux mdnsresponder-compat mono nls python qt3 qt4 test utils"
+IUSE="autoipd bookmarks dbus doc gdbm gtk gtk3 howl-compat +introspection ipv6 kernel_linux mdnsresponder-compat mono nls python qt3 qt4 selinux test utils"
 
 REQUIRED_USE="
 	utils? ( || ( gtk gtk3 ) )
@@ -31,13 +32,13 @@ REQUIRED_USE="
 COMMON_DEPEND="
 	dev-libs/libdaemon
 	dev-libs/expat
-	dev-libs/glib:2
-	gdbm? ( sys-libs/gdbm )
+	>=dev-libs/glib-2.34.3:2[${MULTILIB_USEDEP}]
+	gdbm? ( >=sys-libs/gdbm-1.10-r1[${MULTILIB_USEDEP}] )
 	qt3? ( dev-qt/qt-meta:3 )
-	qt4? ( dev-qt/qtcore:4 )
-	gtk? ( x11-libs/gtk+:2 )
-	gtk3? ( x11-libs/gtk+:3 )
-	dbus? ( sys-apps/dbus )
+	qt4? ( dev-qt/qtcore:4[${MULTILIB_USEDEP}] )
+	gtk? ( x11-libs/gtk+:2[${MULTILIB_USEDEP}] )
+	gtk3? ( x11-libs/gtk+:3[${MULTILIB_USEDEP}] )
+	dbus? ( >=sys-apps/dbus-1.6.18-r1[${MULTILIB_USEDEP}] )
 	kernel_linux? ( sys-libs/libcap )
 	introspection? ( dev-libs/gobject-introspection )
 	mono? (
@@ -58,7 +59,7 @@ COMMON_DEPEND="
 DEPEND="
 	${COMMON_DEPEND}
 	dev-util/intltool
-	virtual/pkgconfig
+	>=virtual/pkgconfig-0-r1[${MULTILIB_USEDEP}]
 	doc? (
 		app-doc/doxygen
 	)
@@ -68,7 +69,13 @@ RDEPEND="
 	${COMMON_DEPEND}
 	howl-compat? ( !net-misc/howl )
 	mdnsresponder-compat? ( !net-misc/mDNSResponder )
+	selinux? ( sec-policy/selinux-avahi )
 "
+
+MULTILIB_WRAPPED_HEADERS=(
+	# necessary until the UI libraries are ported
+	/usr/include/avahi-qt3/qt-watch.h
+)
 
 pkg_preinst() {
 	enewgroup netdev
@@ -113,6 +120,12 @@ src_prepare() {
 
 	epatch "${FILESDIR}"/${P}-so_reuseport-may-not-exist-in-running-kernel.patch
 
+	# allow building client without the daemon
+	epatch "${FILESDIR}"/${P}-build-client-without-daemon.patch
+
+	# Fix build under various locales, bug #501664
+	epatch "${FILESDIR}"/${P}-fix-locale-build.patch
+
 	# Drop DEPRECATED flags, bug #384743
 	sed -i -e 's:-D[A-Z_]*DISABLE_DEPRECATED=1::g' avahi-ui/Makefile.am || die
 
@@ -123,27 +136,43 @@ src_prepare() {
 	>py-compile
 
 	eautoreconf
+
+	# bundled manpages
+	multilib_copy_sources
 }
 
 src_configure() {
+	# those steps should be done once-per-ebuild rather than per-ABI
 	use sh && replace-flags -O? -O0
-
-	local myconf="--disable-static"
-
-	if use python; then
-		python_export_best
-		myconf+="
-			$(use_enable dbus python-dbus)
-			$(use_enable gtk pygtk)
-		"
-	fi
-
-	if use mono; then
-		myconf+=" $(use_enable doc monodoc)"
-	fi
+	use python && python_export_best
 
 	# We need to unset DISPLAY, else the configure script might have problems detecting the pygtk module
 	unset DISPLAY
+
+	multilib-minimal_src_configure
+}
+
+multilib_src_configure() {
+	local myconf=( --disable-static )
+
+	if use python; then
+		myconf+=(
+			$(multilib_native_use_enable dbus python-dbus)
+			$(multilib_native_use_enable gtk pygtk)
+		)
+	fi
+
+	if use mono; then
+		myconf+=( $(multilib_native_use_enable doc monodoc) )
+	fi
+
+	if ! multilib_is_native_abi; then
+		myconf+=(
+			# used by daemons only
+			--disable-libdaemon
+			--with-xml=none
+		)
+	fi
 
 	econf \
 		--localstatedir="${EPREFIX}/var" \
@@ -154,57 +183,59 @@ src_configure() {
 		--disable-monodoc \
 		--enable-glib \
 		--enable-gobject \
-		$(use_enable test tests) \
-		$(use_enable autoipd) \
+		$(multilib_native_use_enable test tests) \
+		$(multilib_native_use_enable autoipd) \
 		$(use_enable mdnsresponder-compat compat-libdns_sd) \
 		$(use_enable howl-compat compat-howl) \
-		$(use_enable doc doxygen-doc) \
-		$(use_enable mono) \
+		$(multilib_native_use_enable doc doxygen-doc) \
+		$(multilib_native_use_enable mono) \
 		$(use_enable dbus) \
-		$(use_enable python) \
+		$(multilib_native_use_enable python) \
 		$(use_enable gtk) \
 		$(use_enable gtk3) \
 		$(use_enable nls) \
-		$(use_enable introspection) \
-		$(use_enable utils gtk-utils) \
-		$(use_enable qt3) \
+		$(multilib_native_use_enable introspection) \
+		$(multilib_native_use_enable utils gtk-utils) \
+		$(multilib_native_use_enable qt3) \
 		$(use_enable qt4) \
 		$(use_enable gdbm) \
 		$(systemd_with_unitdir) \
-		${myconf}
+		"${myconf[@]}"
 }
 
-src_compile() {
-	emake || die "emake failed"
+multilib_src_compile() {
+	emake
 
-	use doc && { emake avahi.devhelp || die ; }
+	multilib_is_native_abi && use doc && emake avahi.devhelp
 }
 
-src_install() {
-	emake install DESTDIR="${D}" || die "make install failed"
+multilib_src_install() {
+	emake install DESTDIR="${D}"
 	use bookmarks && use python && use dbus && use gtk || \
 		rm -f "${ED}"/usr/bin/avahi-bookmarks
 
-	use howl-compat && ln -s avahi-compat-howl.pc "${ED}"/usr/$(get_libdir)/pkgconfig/howl.pc
-	use mdnsresponder-compat && ln -s avahi-compat-libdns_sd/dns_sd.h "${ED}"/usr/include/dns_sd.h
+	use howl-compat && dosym avahi-compat-howl.pc /usr/$(get_libdir)/pkgconfig/howl.pc
+	use mdnsresponder-compat && dosym avahi-compat-libdns_sd/dns_sd.h /usr/include/dns_sd.h
 
-	if use autoipd; then
-		insinto /$(get_libdir)/rcscripts/net
-		doins "${FILESDIR}"/autoipd.sh || die
-
-		insinto /$(get_libdir)/rc/net
-		newins "${FILESDIR}"/autoipd-openrc.sh autoipd.sh || die
-	fi
-
-	dodoc docs/{AUTHORS,NEWS,README,TODO} || die
-
-	if use doc; then
+	if multilib_is_native_abi && use doc; then
 		dohtml -r doxygen/html/. || die
 		insinto /usr/share/devhelp/books/avahi
 		doins avahi.devhelp || die
 	fi
+}
 
-	find "${ED}" -name '*.la' -exec rm -f {} +
+multilib_src_install_all() {
+	if use autoipd; then
+		insinto /$(get_libdir)/rcscripts/net
+		doins "${FILESDIR}"/autoipd.sh
+
+		insinto /$(get_libdir)/netifrc/net
+		newins "${FILESDIR}"/autoipd-openrc.sh autoipd.sh
+	fi
+
+	dodoc docs/{AUTHORS,NEWS,README,TODO}
+
+	prune_libtool_files --all
 }
 
 pkg_postinst() {
