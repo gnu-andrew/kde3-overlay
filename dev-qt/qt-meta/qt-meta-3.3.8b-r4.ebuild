@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/x11-libs/qt/qt-3.3.8b-r2.ebuild,v 1.7 2009/12/03 18:25:47 yngwin Exp $
 
@@ -39,7 +39,7 @@ RDEPEND="
 	mysql? ( virtual/mysql )
 	nas? ( >=media-libs/nas-1.5 )
 	opengl? ( virtual/opengl virtual/glu )
-	postgres? ( dev-db/postgresql-base )
+	postgres? ( dev-db/postgresql )
 	xinerama? ( x11-libs/libXinerama )"
 DEPEND="${RDEPEND}
 	x11-proto/inputproto
