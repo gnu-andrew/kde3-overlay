@@ -14,7 +14,7 @@ SRC_URI="mirror://kde/stable/${PV}/src/${P}.tar.bz2
 
 LICENSE="GPL-2 LGPL-2"
 SLOT="3.5"
-KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~amd64"
 IUSE="acl alsa bindist branding cups doc jpeg2k kerberos legacyssl utempter openexr spell tiff avahi kernel_linux fam lua"
 
 # Added aspell-en as dependency to work around bug 131512.
@@ -165,6 +165,9 @@ src_unpack() {
 	if has_version ">=net-print/cups-1.6" ; then
 		epatch "${FILESDIR}/${P}-cups-1.6.patch";
 	fi
+
+	# support CUPS 2.0
+	epatch "${FILESDIR}/${PN}-cups-2.0.patch"
 }
 
 src_compile() {
